@@ -4,7 +4,7 @@ dotenv.config()
 
 
 const getEnvValue = (envkey : string) : any  => {
-     return  process.env.hasOwnProperty(envkey) ?  process.env[envkey] : null
+     return   process.env[envkey]
 }
 
 const checkEnvKey = (envKey : string) : boolean => {

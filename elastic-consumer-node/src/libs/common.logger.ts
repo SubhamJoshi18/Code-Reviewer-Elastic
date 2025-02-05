@@ -31,6 +31,6 @@ function createLogger(service: string): winston.Logger {
   });
 }
 
-const elasticLogger = createLogger('uber-microservice')
+const elasticLogger = createLogger('elastic-microservice')
 
 export {elasticLogger}

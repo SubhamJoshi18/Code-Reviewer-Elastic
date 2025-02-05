@@ -10,9 +10,10 @@ const port = fetchEnv('PORT')
 const elasticApp = new ElasticApp(app,port);
 
 (async () => {
-    new MainQueueConsumer().checkConnectionAlive().then(() => {
+    const consumers =   MainQueueConsumer.create()
+    consumers.then().then(() => {
         elasticApp.listen().then(() => {
-            elasticLogger.info(`Server is started on the http://localhost:${this.serverPort}`)
+            elasticLogger.info(`Server is started on the http://localhost:${port}`)
         }).catch((err) => {throw new Error(err.message)})
     }).catch((err) => {
             elasticLogger.error(`Error : ${err.message}`)
