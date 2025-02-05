@@ -1,26 +1,25 @@
 import {Connection} from 'amqplib'
 import amqplib from 'amqplib'
 import { elasticLogger } from '../libs/common.logger'
-import { fetchEnv } from '../utils/getEnvValue'
 import { AMQPException } from '../exceptions/index'
+import { IConnectionConfig } from './types'
 
 
-export async function createConnection(){
+async function createConnection(amqpOptions : IConnectionConfig) : Promise<any> {
 
     let retryConnectionCount = 4
     let retryConnectionStatus = true
 
-
-    const connectRabbitMq = () => {
+    const connectRabbitMq = async () : Promise<any | Connection>  => {
         try{    
-            const rabbitmqUrl = fetchEnv('RABBITMQ_URL')
+            const {url : rabbitmqUrl} = amqpOptions
 
             if(!rabbitmqUrl){
-                throw new Error()
+                throw new AMQPException(`There is no any Rabbitmq Url , Please Construct the valid Rabbitmq Url`)
             }
 
-            const connection = 
-
+            const connection = await amqplib.connect(rabbitmqUrl)
+            return connection
         }catch(err){
             if(retryConnectionCount.toString().startsWith('0')) {
                 elasticLogger.error(`The Maximum Retry Connection Count is Exceeded, Try again Later.. Retry Count : ${retryConnectionCount}`)
@@ -33,8 +32,14 @@ export async function createConnection(){
     }
 
     while(retryConnectionStatus && !retryConnectionCount.toString().startsWith('0')) {
-        connectRabbitMq()
+        const result : Connection = await connectRabbitMq()
+        if(!result){
+            continue
+        }
+        return result
     }
+}
 
-
+export {
+    createConnection
 }
