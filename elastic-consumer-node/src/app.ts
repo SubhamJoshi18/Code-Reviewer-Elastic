@@ -13,10 +13,6 @@ class ElasticApp {
         this.serverPort = serverPort
     }
 
-
-
-
-
     async listen () : Promise<any> {
         try{
             this.app.listen(this.serverPort,() => {
