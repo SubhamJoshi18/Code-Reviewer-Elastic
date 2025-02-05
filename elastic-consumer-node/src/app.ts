@@ -1,5 +1,7 @@
 import {Application} from 'express'
 import { elasticLogger } from './libs/common.logger'
+import { serverMiddleware } from './middleware/server.middleware'
+import { serverRouter } from './routes/server.routes'
 
 
 class ElasticApp {
@@ -11,6 +13,8 @@ class ElasticApp {
     constructor(app : Application, serverPort : number) {         
         this.app = app
         this.serverPort = serverPort
+        serverMiddleware(this.app)
+        serverRouter(this.app)
     }
 
     async listen () : Promise<any> {
