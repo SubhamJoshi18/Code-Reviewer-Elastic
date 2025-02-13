@@ -1,6 +1,7 @@
 import {ConsumeMessage} from 'amqplib'
 import {safeParseJson} from '../../utils/parseJson'
 import { AMQPException } from '../../exceptions/index'
+import { elasticLogger } from '../../libs/common.logger'
 
 async function handleReviewer (msg : ConsumeMessage | null) : Promise<any> {
     let validHandler = true
@@ -11,6 +12,8 @@ async function handleReviewer (msg : ConsumeMessage | null) : Promise<any> {
             if(!content){
                 throw new AMQPException(`reviewer-consumer: The Payload Received by the consumer is not valid payload`)
             }
+
+            elasticLogger.info(`The Message is Received : ${JSON.stringify(content)}`)
 
 
         return validHandler

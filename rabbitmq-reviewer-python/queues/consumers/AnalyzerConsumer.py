@@ -2,6 +2,7 @@ import json
 from queues.handlers.AnalyzerHandler import callback
 from constants.QueueConstant import ANALYZER_CONSUMER
 
+
 def analyzer_consumer(channel, queue_name=ANALYZER_CONSUMER):
 
 
