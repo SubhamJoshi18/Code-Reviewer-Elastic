@@ -17,18 +17,25 @@ class ReviewService {
         const publisherInstance = await MainQueueConsumer.create(true)
         
         const preparePayload = {
-            code  : code
+            code_template  : code,
+            code_approved : false,
+            code_result : {
+                response : null
+            }
         }
+
         const savedResult = await this.elasticRepository.insertDocuments(preparePayload,ELASTIC_CODE_INDEX)
         const statusResult = savedResult['result']
+        const docResultIds = savedResult['_id']
         const isValidResult = statusResult.startsWith('c') && statusResult.endsWith('d')
 
 
         if(isValidResult){
-            const parseTokens = await this.elasticRepository.tokenizeWords(preparePayload['code'])
+            const parseTokens = await this.elasticRepository.tokenizeWords(preparePayload['code_template'])
             await publisherInstance.publishAnalyzer({
                 code : code,
-                parseTokens : parseTokens
+                parseTokens : parseTokens,
+                docIds : docResultIds
             })
             validPublished = true
         }

@@ -1,6 +1,7 @@
 import { Client } from "@elastic/elasticsearch";
 import { getElasticClient } from '../elastic/connect'
 import { WriteResponseBase } from "@elastic/elasticsearch/lib/api/types";
+import { ELASTIC_CODE_INDEX } from '../constants/elasticConstants'
 
 
 class ElasticRepository {
@@ -13,14 +14,13 @@ class ElasticRepository {
         return client
     }
 
-    public async insertDocuments(docPayload : {code : string}, indexName : string) : Promise<WriteResponseBase> {
+    public async insertDocuments(docPayload : {code_template : string,code_approved : boolean, code_result : object}, indexName : string) : Promise<WriteResponseBase> {
         this.elasticClient = await this.initalizeClient()
-        const { code : parseCode } = docPayload 
 
         const savedResult  : WriteResponseBase = await this.elasticClient.index({
             index : indexName,
             document : {
-                code : parseCode
+                ...docPayload
             }
         })
         return savedResult
@@ -34,6 +34,20 @@ class ElasticRepository {
             text : codeWord
         })
         return tokenizeCode
+    }
+
+
+    public async updateCodeStatus(codePayload : {code_approved : boolean, code_result : object,docIds : string}) {
+            this.elasticClient = await this.initalizeClient()
+            const updatedResult = await this.elasticClient.update({
+                index : ELASTIC_CODE_INDEX,
+                id : codePayload['docIds'],
+                doc : {
+                    code_approved : codePayload['code_approved'],
+                    code_result  : codePayload['code_result']
+                }
+            })
+            return updatedResult
     }
 }
 

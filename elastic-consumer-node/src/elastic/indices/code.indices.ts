@@ -20,7 +20,9 @@ const createCodeIndex  = async () => {
         body : {
             mappings : {
                 properties :{
-                    code_template : {type : "text"}
+                    code_template : {type : "text"},
+                    code_approved : {type: "boolean"},
+                    code_result : {type : "object"}
                 }
             }
         },

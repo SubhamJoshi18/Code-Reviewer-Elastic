@@ -5,8 +5,10 @@ import { reviewerConfig } from '../../config/reviewerConfig'
 import { handleReviewer } from '../handlers/reviewHandler'
 
 
+
 const reviewerConsumer = async (channel : Channel)  : Promise<any> => {
     let validConsumer = true
+
      try{
         const {queueName,exchange} = reviewerConfig
 
