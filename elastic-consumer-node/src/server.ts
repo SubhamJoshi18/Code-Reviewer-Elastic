@@ -3,7 +3,7 @@ import { fetchEnv } from './utils/getEnvValue'
 import MainQueueConsumer from './queues/mainQueueManager'
 import ElasticApp from './app'
 import { elasticLogger } from './libs/common.logger'
-import connectToElastic from './elastic/connect'
+import {connectToElastic} from './elastic/connect'
 
 const app = express()
 const port = fetchEnv('PORT')
