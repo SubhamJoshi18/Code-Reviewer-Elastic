@@ -23,6 +23,10 @@ const createCodeIndex  = async () => {
                     code_template : {type : "text"}
                 }
             }
+        },
+        settings :{
+            number_of_shards : 2,
+            number_of_replicas:2 
         }
     })
 

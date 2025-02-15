@@ -12,7 +12,8 @@ def create_connection():
 
         try:
             url = env_config['url']
-            connection = pika.BlockingConnection(pika.ConnectionParameters(url))
+            connection = pika.BlockingConnection(pika.URLParameters(url))
+            # connection = pika.BlockingConnection(pika.ConnectionParameters(url))
             return connection
         except AMQPConnectionError as amqp_error:
             is_maximum_exceeded = str(retry_connection_count).startswith('0')

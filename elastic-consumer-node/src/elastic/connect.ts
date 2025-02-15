@@ -12,14 +12,13 @@ const checkClusterHealth = async (client : Client) => {
 
     if(clusterStatus.includes("yellow")){
         elasticLogger.info(`The Cluster Health is on the risk it is currenlty on the yellow ${clusterStatus}`)
-        return false
     }
     return clusterStatus.includes("green")
 }
 
 
 const initializeIndices = async () => {        
-    const promiseIndices = await Promise.allSettled([createCodeIndex])
+    const promiseIndices = await Promise.allSettled([createCodeIndex()])
     return promiseIndices.filter((data:any) => data.status !== 'fulfilled').length === 0
 }
 
@@ -59,9 +58,6 @@ const getElasticClient = async () => {
     const elasticClient = connectToElastic(true)
     return elasticClient
 }
-
-
-
 
 
 export  {
