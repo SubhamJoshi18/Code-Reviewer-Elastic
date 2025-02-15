@@ -1,28 +1,4 @@
 services:
-  code-reviewer-frontend:
-    build: 
-      context: ./code-reviewer-frontend
-      dockerfile: Dockerfile
-    expose:
-      - '5173:5173'
-    depends_on:
-      - elastic-consumer-node
-      - elasticsearch
-      - kibana
-      - rabbitmq
-
-  elastic-consumer-node:
-    build: 
-      context: ./elastic-consumer-node
-      dockerfile: Dockerfile
-    expose:
-      - '3000:3000'
-    depends_on:
-      - elasticsearch
-      - kibana
-      - rabbitmq
-    networks:
-      - elk
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0

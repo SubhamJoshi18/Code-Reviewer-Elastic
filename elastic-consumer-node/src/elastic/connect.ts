@@ -22,3 +22,5 @@ const connectToElastic = async () : Promise<any> => {
     }
   
 }
+
+export default connectToElastic
